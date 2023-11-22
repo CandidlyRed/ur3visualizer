@@ -65,38 +65,58 @@ class StlViewer extends Component {
       }
       this.boneGroups[1].rotation.y = (Math.PI * this.props.rotation1) / 180;
 
-      this.boneGroups[2].position.set(7 * Math.sin((Math.PI * this.props.rotation1) / 180),7,7 * Math.cos((Math.PI * this.props.rotation1) / 180));
+      this.boneGroups[2].position.set(
+        7 * Math.sin((Math.PI * this.props.rotation1) / 180),
+        7,
+        7 * Math.cos((Math.PI * this.props.rotation1) / 180)
+      );
+
       this.boneGroups[2].rotation.z = (Math.PI * this.props.rotation2) / 180;
 
       this.boneGroups[3].position.set(
-        10 * Math.cos((Math.PI * this.props.rotation2) / 180) + this.boneGroups[2].position.x,
-        10 * Math.sin((Math.PI * this.props.rotation2) / 180) + this.boneGroups[2].position.y,
+        10 * Math.sin((Math.PI * -this.props.rotation2) / 180) + this.boneGroups[2].position.x,
+        10 * Math.cos((Math.PI * this.props.rotation2) / 180) + this.boneGroups[2].position.y,
         this.boneGroups[2].position.z
       );
 
       this.boneGroups[4].position.set(
-        this.boneGroups[3].position.x + (3 * Math.sin((Math.PI * this.props.rotation3) / 180)),
-        this.boneGroups[3].position.y + (3 * Math.cos((Math.PI * this.props.rotation3) / 180)),
-        this.boneGroups[3].position.z
+        this.boneGroups[3].position.x,
+        this.boneGroups[3].position.y,
+        this.boneGroups[3].position.z  + (3) 
       );
 
       this.boneGroups[4].rotation.z = (Math.PI * this.props.rotation3) / 180;
+
+      this.boneGroups[5].position.set(
+        this.boneGroups[4].position.x + (9 * Math.sin((Math.PI * -this.props.rotation3) / 180)),
+        this.boneGroups[4].position.y + (9 * Math.cos((Math.PI * this.props.rotation3) / 180)),
+        this.boneGroups[4].position.z
+      );
+
+
+      this.boneGroups[6].position.set(
+        this.boneGroups[5].position.x,
+        this.boneGroups[5].position.y,
+        this.boneGroups[5].position.z + 5
+      );      
+      
       this.boneGroups[6].rotation.z = (Math.PI * this.props.rotation4) / 180;
+
+      this.boneGroups[7].position.set(
+        this.boneGroups[6].position.x + (4 * Math.sin((Math.PI * -this.props.rotation4) / 180)),
+        this.boneGroups[6].position.y + (4 * Math.cos((Math.PI * this.props.rotation4) / 180)),
+        this.boneGroups[6].position.z
+      );      
+
       this.boneGroups[7].rotation.y = (Math.PI * this.props.rotation5) / 180;
-      this.applyBoneGroupRotations();
+
+      this.boneGroups[8].position.set(
+        this.boneGroups[7].position.x + (4 * Math.sin((Math.PI * this.props.rotation5) / 180)),
+        this.boneGroups[7].position.y,
+        this.boneGroups[7].position.z + (4 * Math.cos((Math.PI * this.props.rotation5) / 180))
+      );
 
       this.renderer.render(this.scene, this.camera);
-    }
-  }
-
-  applyBoneGroupRotations() {
-    // Iterate through bone groups and apply rotations
-    for (let i = 0; i < this.boneGroups.length; i++) {
-      const boneGroup = this.boneGroups[i];
-      const rotation = boneGroup.rotation;
-  
-      // Apply rotation to the bone group's transformation
-      boneGroup.setRotationFromEuler(new THREE.Euler(rotation.x, rotation.y, rotation.z));
     }
   }
 
