@@ -19,7 +19,7 @@ class StlViewer extends Component {
     rotation4: PropTypes.number,
     rotation5: PropTypes.number,
     rotation6: PropTypes.number,
-    staticstl: PropTypes.bool,
+    staticstl: PropTypes.bool
   };
 
   constructor(props) {
@@ -66,9 +66,9 @@ class StlViewer extends Component {
       this.boneGroups[1].rotation.y = (Math.PI * this.props.rotation1) / 180;
 
       this.boneGroups[2].position.set(
-        7 * Math.sin((Math.PI * this.props.rotation1) / 180),
+        7 * Math.sin((Math.PI * this.props.rotation1) / 180) + this.boneGroups[1].position.x,
         7,
-        7 * Math.cos((Math.PI * this.props.rotation1) / 180)
+        7 * Math.cos((Math.PI * this.props.rotation1) / 180 + this.boneGroups[1].position.z)
       );
 
       this.boneGroups[2].rotation.z = (Math.PI * this.props.rotation2) / 180;
@@ -97,7 +97,7 @@ class StlViewer extends Component {
       this.boneGroups[6].position.set(
         this.boneGroups[5].position.x,
         this.boneGroups[5].position.y,
-        this.boneGroups[5].position.z + 5
+        this.boneGroups[5].position.z - 3
       );      
       
       this.boneGroups[6].rotation.z = (Math.PI * this.props.rotation4) / 180;
@@ -115,6 +115,10 @@ class StlViewer extends Component {
         this.boneGroups[7].position.y,
         this.boneGroups[7].position.z + (4 * Math.cos((Math.PI * this.props.rotation5) / 180))
       );
+
+      if (this.state.boneGroups !== this.BoneGroups) {
+        this.props.onBoneGroupsUpdate(this.boneGroups);
+      }
 
       this.renderer.render(this.scene, this.camera);
     }
@@ -142,9 +146,9 @@ class StlViewer extends Component {
       new THREE.Vector3(0, 17, 7),
       new THREE.Vector3(0, 17, 10),
       new THREE.Vector3(0, 26, 10),
-      new THREE.Vector3(0, 26, 15),
-      new THREE.Vector3(0, 30, 15),
-      new THREE.Vector3(0, 30, 19),
+      new THREE.Vector3(0, 26, 7),
+      new THREE.Vector3(0, 30, 7),
+      new THREE.Vector3(0, 30, 11),
     ];
 
     // Create joints and bone segments based on the specified positions
@@ -165,6 +169,8 @@ class StlViewer extends Component {
 
       // Add the joint group to the list of bone groups
       this.boneGroups.push(jointGroup);
+
+      this.props.onBoneGroupsUpdate(this.boneGroups);
 
       // Create a bone segment (line) between joints (except for the last joint)
       if (i < jointPositions.length - 1) {

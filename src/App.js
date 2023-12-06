@@ -11,6 +11,7 @@ class App extends Component {
     rotation5: 0,
     rotation6: 0,
     staticstl: true,
+    boneGroups: [],
   };
 
   toggleStaticStl = () => {
@@ -18,9 +19,35 @@ class App extends Component {
       staticstl: !prevState.staticstl,
     }));
   };
+  
+  checkCollision = (boneGroups) => {
+    // Add your collision detection logic here
+    // For example, checking if any two bones are within a distance of 1
+    console.log(boneGroups)
+    for (let i = 0; i < boneGroups.length - 1; i++) {
+      const bone1 = boneGroups[i].position;
+  
+      for (let j = i + 1; j < boneGroups.length; j++) {
+        const bone2 = boneGroups[j].position;
+  
+        const distance = bone1.distanceTo(bone2);
+        console.log("hi")
+        if (distance < 3) {
+          console.log("hi")
+          
+          // Collision detected
+          return true;
+        }
+      }
+    }
+  
+    // No collision
+    return false;
+  };
+  
 
   render() {
-    const { rotation1,rotation2,rotation3,rotation4,rotation5,rotation6,staticstl } = this.state;
+    const { rotation1,rotation2,rotation3,rotation4,rotation5,rotation6,staticstl,boneGroups } = this.state;
 
     return (
       <div className="App">
@@ -74,6 +101,7 @@ class App extends Component {
             checked={staticstl}
             onChange={this.toggleStaticStl}
           />
+          <p>Collision: {this.checkCollision(boneGroups) ? "Yes" : "No"}</p>
         </div>
         <div className="container" id="div2">
           <StlViewer
@@ -84,6 +112,8 @@ class App extends Component {
             rotation5={rotation5}
             rotation6={rotation6}
             staticstl={staticstl}
+            boneGroups={boneGroups}
+            onBoneGroupsUpdate={(updatedBoneGroups) => this.setState({ boneGroups: updatedBoneGroups })}
           />
         </div>
       </div>
